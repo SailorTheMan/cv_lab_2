@@ -1,0 +1,8 @@
+cmake_minimum_required(VERSION 3.2)
+project(lw2)
+find_package( OpenCV REQUIRED)
+include_directories( ${OpenCV_INCLUDE_DIRS} )
+add_executable( cross_corr main.cpp MathImg/MathImg.cpp)
+add_executable( sift sift_pattern_recogn.cpp)
+target_link_libraries( cross_corr ${OpenCV_LIBS} )
+target_link_libraries( sift ${OpenCV_LIBS} )
