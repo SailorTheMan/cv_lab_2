@@ -14,8 +14,11 @@ Rect2i getPatternRect(std::vector<KeyPoint>& kps1, std::vector<KeyPoint>& kps2, 
 
 int main(int argc, char const *argv[])
 {
-    const Mat input = imread("../samples/lena.png", 0);
-    const Mat pattern = imread("../samples/lena_pattern_3.png", 0);
+    // const Mat input = imread("../samples/lena/lena.png", 0);
+    // const Mat pattern = imread("../samples/lena/lena_pattern_3.png", 0);
+
+    const Mat input = imread("../samples/box/test1.jpg", 0);
+    const Mat pattern = imread("../samples/box/pattern.jpg", 0);
 
     Ptr<SIFT> siftPtr = SIFT::create();
     std::vector<KeyPoint> keypoints1, keypoints2;
@@ -27,7 +30,7 @@ int main(int argc, char const *argv[])
     std::vector< std::vector<DMatch> > knn_matches;
     bfPtr->knnMatch(des1, des2, knn_matches, 2);
 
-    const float ratio_thresh = 0.1f;
+    const float ratio_thresh = 0.3f;
     std::vector<DMatch> good_matches;
 
     for (size_t i = 0; i < knn_matches.size(); i++)
@@ -45,8 +48,17 @@ int main(int argc, char const *argv[])
     Mat img_matches;
     drawMatches( input, keypoints1, pattern, keypoints2, good_matches, img_matches, Scalar::all(-1),
                  Scalar::all(-1), std::vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS );
-    imshow("Good Matches", img_matches );
-    imshow("result", output );
+    Mat scaled_mathces;
+    Mat scaled_output;
+    float scale_ratio = (float)512 / (float)img_matches.rows;
+    unsigned int scaled_width = (float)img_matches.cols * scale_ratio;
+    unsigned int scaled_height = (float)img_matches.rows * scale_ratio;
+    resize(img_matches,scaled_mathces, Size(scaled_width, scaled_height));
+    scaled_width = (float)output.cols * scale_ratio;
+    scaled_height = (float)output.rows * scale_ratio;
+    resize(output,scaled_output, Size(scaled_width, scaled_height));
+    imshow("Good Matches", scaled_mathces );
+    imshow("result", scaled_output );
     waitKey(0);
     return 0;
 }

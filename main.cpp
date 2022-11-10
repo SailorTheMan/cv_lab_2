@@ -54,8 +54,11 @@ Rect2i findPattern(const Mat& pattern, const Mat& src)
 
 int main(int argc, char const *argv[])
 {
-    Mat srcImg = imread("../samples/lena.png");
-    Mat pattern = imread("../samples/lena_pattern_3.png");
+    // Mat srcImg = imread("../samples/lena/lena.png");
+    // Mat pattern = imread("../samples/lena/lena_pattern.png");
+
+    const Mat srcImg = imread("../samples/box/test1.jpg", 0);
+    const Mat pattern = imread("../samples/box/pattern.jpg", 0);
     Rect patternRect = findPattern(pattern, srcImg);
     rectangle(srcImg, patternRect, Scalar(255, 0, 0), 3);
     imshow("src", srcImg);
